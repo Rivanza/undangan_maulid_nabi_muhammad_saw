@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undangan Digital Maulid Nabi Muhammad SAW - SD Negeri 8 Cot Girek</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        emerald: {
+                            850: '#0c4a2d',
+                            900: '#0a3a24',
+                            950: '#052316',
+                        },
+                        gold: {
+                            300: '#f6e05e',
+                            400: '#eef06d',
+                            500: '#d4af37',
+                            600: '#b89628',
+                            700: '#8c701b',
+                        },
+                        cream: {
+                            50: '#fdfbf7',
+                            100: '#f7f4eb',
+                            200: '#efe9d5',
+                            300: '#e2d7b5',
+                        }
+                    },
+                    fontFamily: {
+                        amiri: ['Amiri', 'serif'],
+                        playfair: ['Playfair Display', 'serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@400;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Custom Styling & Animations -->
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #052316;
+            color: #2c3e50;
+            overflow-x: hidden;
+        }
+
+        .font-amiri { font-family: 'Amiri', serif; }
+        .font-playfair { font-family: 'Playfair Display', serif; }
+
+        /* Islamic Pattern Overlay */
+        .bg-pattern {
+            background-image: radial-gradient(#d4af37 0.75px, transparent 0.75px), radial-gradient(#d4af37 0.75px, #fdfbf7 0.75px);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            opacity: 0.95;
+        }
+
+        .bg-dark-pattern {
+            background-color: #0a3a24;
+            background-image: radial-gradient(rgba(212, 175, 55, 0.25) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Gold Gradient Elements */
+        .gold-border {
+            border: 2px solid;
+            border-image: linear-gradient(135deg, #d4af37, #fff8db, #b89628) 1;
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(135deg, #b89628 0%, #fef08a 50%, #8c701b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .gold-bg-gradient {
+            background: linear-gradient(135deg, #d4af37 0%, #fef08a 50%, #b89628 100%);
+        }
+
+        /* Animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(2deg); }
+        }
+
+        .animate-float-slow {
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .animate-float-fast {
+            animation: float 2.8s ease-in-out infinite alternate;
+        }
+
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .animate-spin-slow {
+            animation: spin-slow 12s linear infinite;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a3a24;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d4af37;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #b89628;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-gold-500 selection:text-white">
+
+    <!-- HIDDEN YOUTUBE PLAYER CONTAINER -->
+    <div class="hidden">
+        <div id="youtube-player"></div>
+    </div>
+
+    <!-- FLOATING MUSIC PLAYER BUTTON -->
+    <div id="musicContainer" class="fixed bottom-20 right-6 z-40 hidden">
+        <button id="musicToggle" onclick="toggleMusic()" class="relative group w-12 h-12 rounded-full gold-bg-gradient text-emerald-950 shadow-2xl flex items-center justify-center border-2 border-white transition-all transform hover:scale-110 active:scale-95 focus:outline-none" title="Putar/Hentikan Musik">
+            <span class="absolute inset-0 rounded-full bg-gold-400 opacity-75 animate-ping group-hover:opacity-100"></span>
+            <i id="musicIcon" class="fa-solid fa-music text-lg relative z-10 animate-spin-slow"></i>
+        </button>
+    </div>
+
+    <!-- STICKY BOTTOM NAVIGATION BAR -->
+    <nav id="bottomNav" class="fixed bottom-0 left-0 right-0 z-40 bg-emerald-950/95 backdrop-blur-md border-t border-gold-500/40 text-cream-100 hidden">
+        <div class="max-w-md mx-auto flex justify-around items-center py-2 px-3 text-[11px]">
+            <a href="#beranda" class="flex flex-col items-center hover:text-gold-300 transition py-1">
+                <i class="fa-solid fa-house text-base mb-1"></i>
+                <span>Beranda</span>
+            </a>
+            <a href="#detail" class="flex flex-col items-center hover:text-gold-300 transition py-1">
+                <i class="fa-solid fa-calendar-star text-base mb-1"></i>
+                <span>Acara</span>
+            </a>
+            <a href="#lokasi" class="flex flex-col items-center hover:text-gold-300 transition py-1">
+                <i class="fa-solid fa-location-dot text-base mb-1"></i>
+                <span>Lokasi</span>
+            </a>
+            <a href="#kisah" class="flex flex-col items-center hover:text-gold-300 transition py-1">
+                <i class="fa-solid fa-book-quran text-base mb-1"></i>
+                <span>Kisah Nabi</span>
+            </a>
+            <a href="#rsvp" class="flex flex-col items-center hover:text-gold-300 transition py-1">
+                <i class="fa-solid fa-envelope-open-text text-base mb-1"></i>
+                <span>RSVP</span>
+            </a>
+        </div>
+    </nav>
+
+    <!-- COVER / HERO OVERLAY (Modal Buka Undangan) -->
+    <div id="coverOverlay" class="fixed inset-0 z-50 flex items-center justify-center bg-emerald-950 p-4 overflow-y-auto">
+        <div class="relative w-full max-w-lg bg-cream-50 border-4 border-gold-500 rounded-3xl p-6 md:p-10 text-center shadow-2xl my-auto">
+            
+            <!-- Corner Ornaments -->
+            <div class="absolute top-3 left-3 text-gold-500 text-xl opacity-80"><i class="fa-solid fa-kaaba"></i></div>
+            <div class="absolute top-3 right-3 text-gold-500 text-xl opacity-80"><i class="fa-solid fa-kaaba"></i></div>
+            <div class="absolute bottom-3 left-3 text-gold-500 text-xl opacity-80"><i class="fa-solid fa-star-and-crescent"></i></div>
+            <div class="absolute bottom-3 right-3 text-gold-500 text-xl opacity-80"><i class="fa-solid fa-star-and-crescent"></i></div>
+
+            <!-- Animated Lanterns & Mosque -->
+            <div class="flex justify-between items-center px-6 mb-3">
+                <i class="fa-solid fa-lightbulb text-gold-500 text-3xl animate-float-slow"></i>
+                <i class="fa-solid fa-mosque text-emerald-850 text-5xl"></i>
+                <i class="fa-solid fa-lightbulb text-gold-500 text-3xl animate-float-fast"></i>
+            </div>
+
+            <!-- Bismillah Calligraphy -->
+            <div class="font-amiri text-3xl md:text-4xl text-emerald-900 mb-3 leading-relaxed">
+                بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيمِ
+            </div>
+
+            <p class="text-xs uppercase tracking-widest text-gold-600 font-semibold mb-1">Undangan Digital Resmi</p>
+            <h1 class="font-playfair text-2xl md:text-3xl font-bold text-emerald-950 mb-1">
+                Peringatan Maulid Nabi <br><span class="text-emerald-800 font-amiri text-3xl md:text-4xl font-normal">Muhammad SAW</span>
+            </h1>
+
+            <p class="text-sm font-semibold text-emerald-900 mb-6">SD Negeri 8 Cot Girek</p>
+
+            <!-- Guest Name Display Box -->
+            <div class="bg-emerald-900/10 border border-gold-500/50 rounded-2xl p-4 mb-6 backdrop-blur-sm">
+                <p class="text-xs text-gray-600 uppercase tracking-wider mb-1">Kepada Yth. Bapak / Ibu / Saudara/i:</p>
+                <div id="guestNameDisplay" class="font-playfair font-bold text-lg md:text-xl text-emerald-900 underline decoration-gold-500 decoration-2 underline-offset-4">
+                    Tamu Undangan
+                </div>
+            </div>
+
+            <!-- Open Button -->
+            <button id="openBtn" onclick="openInvitation()" class="w-full py-3.5 px-6 rounded-full gold-bg-gradient text-emerald-950 font-bold text-base shadow-lg hover:shadow-xl hover:brightness-105 active:scale-95 transition-all flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-envelope-open text-emerald-900"></i>
+                <span>Buka Undangan</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- MAIN WEBSITE CONTAINER -->
+    <main id="mainContent" class="max-w-2xl mx-auto bg-cream-50 min-h-screen shadow-2xl relative border-x border-gold-500/30 pb-24">
+
+        <!-- HEADER BANNER & HERO SECTION -->
+        <section id="beranda" class="relative bg-dark-pattern text-white text-center pt-12 pb-16 px-6 rounded-b-[40px] shadow-lg border-b-4 border-gold-500 overflow-hidden">
+            <!-- Decorative Arch Top Border -->
+            <div class="absolute top-0 left-0 right-0 h-3 bg-gradient-to-r from-gold-600 via-gold-300 to-gold-600"></div>
+
+            <!-- Floating Lanterns -->
+            <div class="absolute top-4 left-6 text-gold-400 text-2xl animate-float-slow">
+                <i class="fa-solid fa-lightbulb"></i>
+            </div>
+            <div class="absolute top-4 right-6 text-gold-400 text-2xl animate-float-fast">
+                <i class="fa-solid fa-lightbulb"></i>
+            </div>
+
+            <!-- Emblem Icon -->
+            <div class="w-16 h-16 mx-auto mb-4 rounded-full border-2 border-gold-400 flex items-center justify-center bg-emerald-900/80 shadow-md">
+                <i class="fa-solid fa-star-and-crescent text-2xl text-gold-400"></i>
+            </div>
+
+            <p class="text-xs uppercase tracking-widest text-gold-300 font-semibold mb-2">Undangan Hari Besar Islam</p>
+            <h1 class="font-playfair text-3xl md:text-4xl font-bold mb-1 text-white tracking-wide">
+                Maulid Nabi
+            </h1>
+            <div class="font-amiri text-4xl md:text-5xl text-gold-300 mb-4 font-normal">
+                Muhammad SAW
+            </div>
+
+            <div class="inline-block bg-emerald-950/80 border border-gold-400/50 rounded-full px-5 py-1.5 text-xs text-gold-200 font-medium tracking-wide mb-6">
+                <i class="fa-regular fa-calendar-check mr-1.5 text-gold-400"></i> Kamis, 29 Oktober 2026
+            </div>
+
+            <div class="bg-emerald-900/60 backdrop-blur-sm border border-gold-500/30 rounded-2xl p-4 text-cream-200 text-xs md:text-sm max-w-md mx-auto font-light leading-relaxed">
+                "Sesungguhnya telah ada pada (diri) Rasulullah itu suri teladan yang baik bagimu (yaitu) bagi orang yang mengharap (rahmat) Allah dan (kedatangan) hari kiamat."
+                <span class="block text-[11px] text-gold-400 font-semibold mt-1">(QS. Al-Ahzab: 21)</span>
+            </div>
+        </section>
+
+        <!-- ASSALAMU'ALAIKUM & SALUTATION -->
+        <section class="py-10 px-6 text-center">
+            <div class="font-amiri text-2xl md:text-3xl text-emerald-900 mb-3">
+                السَّلاَمُ عَلَيْكُمْ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ
+            </div>
+            <p class="text-xs md:text-sm text-gray-700 leading-relaxed max-w-lg mx-auto">
+                Dalam rangka memperingati Maulid Nabi Muhammad SAW, kami keluarga besar <strong class="text-emerald-900 font-semibold">SD Negeri 8 Cot Girek</strong> mengundang Bapak/Ibu/Saudara/i untuk hadir pada acara yang insyaAllah dilaksanakan pada:
+            </p>
+        </section>
+
+        <!-- COUNTDOWN TIMER SECTION -->
+        <section class="px-6 mb-10">
+            <div class="bg-emerald-900 rounded-3xl p-6 text-white text-center shadow-xl border-2 border-gold-500 relative overflow-hidden">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl text-gold-400">
+                    <i class="fa-solid fa-mosque"></i>
+                </div>
+                <h3 class="font-playfair text-base md:text-lg text-gold-300 font-semibold mb-4">
+                    <i class="fa-solid fa-hourglass-half mr-2"></i>Hitung Mundur Acara
+                </h3>
+                <div class="grid grid-cols-4 gap-2 md:gap-4 max-w-md mx-auto relative z-10">
+                    <div class="bg-emerald-950/80 p-3 rounded-2xl border border-gold-500/30">
+                        <span id="cd-days" class="block font-bold text-2xl md:text-3xl text-gold-400">00</span>
+                        <span class="text-[10px] md:text-xs text-gray-300 uppercase tracking-wider">Hari</span>
+                    </div>
+                    <div class="bg-emerald-950/80 p-3 rounded-2xl border border-gold-500/30">
+                        <span id="cd-hours" class="block font-bold text-2xl md:text-3xl text-gold-400">00</span>
+                        <span class="text-[10px] md:text-xs text-gray-300 uppercase tracking-wider">Jam</span>
+                    </div>
+                    <div class="bg-emerald-950/80 p-3 rounded-2xl border border-gold-500/30">
+                        <span id="cd-minutes" class="block font-bold text-2xl md:text-3xl text-gold-400">00</span>
+                        <span class="text-[10px] md:text-xs text-gray-300 uppercase tracking-wider">Menit</span>
+                    </div>
+                    <div class="bg-emerald-950/80 p-3 rounded-2xl border border-gold-500/30">
+                        <span id="cd-seconds" class="block font-bold text-2xl md:text-3xl text-gold-400">00</span>
+                        <span class="text-[10px] md:text-xs text-gray-300 uppercase tracking-wider">Detik</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DETAIL UTAMA ACARA CARDS -->
+        <section id="detail" class="px-6 space-y-4 mb-12 scroll-mt-6">
+            <div class="text-center mb-6">
+                <h2 class="font-playfair text-2xl font-bold text-emerald-950">Detail Utama Acara</h2>
+                <div class="w-16 h-1 gold-bg-gradient mx-auto rounded-full mt-2"></div>
+            </div>
+
+            <!-- Hari & Tanggal -->
+            <div class="bg-white p-5 rounded-2xl shadow-md border-l-4 border-gold-500 flex items-center space-x-4 hover:shadow-lg transition">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center text-emerald-900 text-xl shrink-0">
+                    <i class="fa-regular fa-calendar-days"></i>
+                </div>
+                <div>
+                    <span class="text-xs text-gray-500 uppercase tracking-wider font-semibold block">Hari / Tanggal</span>
+                    <span class="text-base font-bold text-emerald-950">Kamis, 29 Oktober 2026</span>
+                </div>
+            </div>
+
+            <!-- Waktu -->
+            <div class="bg-white p-5 rounded-2xl shadow-md border-l-4 border-gold-500 flex items-center space-x-4 hover:shadow-lg transition">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center text-emerald-900 text-xl shrink-0">
+                    <i class="fa-regular fa-clock"></i>
+                </div>
+                <div>
+                    <span class="text-xs text-gray-500 uppercase tracking-wider font-semibold block">Waktu</span>
+                    <span class="text-base font-bold text-emerald-950">10:00 WIB</span>
+                </div>
+            </div>
+
+            <!-- Tempat -->
+            <div class="bg-white p-5 rounded-2xl shadow-md border-l-4 border-gold-500 flex items-center space-x-4 hover:shadow-lg transition">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center text-emerald-900 text-xl shrink-0">
+                    <i class="fa-solid fa-school"></i>
+                </div>
+                <div>
+                    <span class="text-xs text-gray-500 uppercase tracking-wider font-semibold block">Tempat / Lokasi</span>
+                    <span class="text-base font-bold text-emerald-950">SD Negeri 8 Cot Girek</span>
+                </div>
+            </div>
+
+            <!-- Penceramah -->
+            <div class="bg-white p-5 rounded-2xl shadow-md border-l-4 border-gold-500 flex items-center space-x-4 hover:shadow-lg transition">
+                <div class="w-12 h-12 rounded-2xl bg-emerald-100 flex items-center justify-center text-emerald-900 text-xl shrink-0">
+                    <i class="fa-solid fa-microphone-lines"></i>
+                </div>
+                <div>
+                    <span class="text-xs text-gray-500 uppercase tracking-wider font-semibold block">Penceramah Utama</span>
+                    <span class="text-base font-bold text-emerald-950">Tgk. Muhammad Ali, S.Pd</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- MAULID NABI STORY / KISAH KETELADANAN & SEJARAH -->
+        <section id="kisah" class="px-6 mb-12 scroll-mt-6">
+            <div class="bg-gradient-to-br from-emerald-900 to-emerald-950 rounded-3xl p-6 text-white shadow-xl border border-gold-500/50">
+                <div class="text-center mb-6">
+                    <span class="text-xs text-gold-400 uppercase tracking-widest font-semibold block">Meneladani Akhlak Mulia Rasulullah SAW dalam Kehidupan Sehari-hari</span>
+                    <h2 class="font-playfair text-2xl font-bold text-white mt-1">Maulid Nabi Story</h2>
+                    <div class="w-12 h-0.5 bg-gold-400 mx-auto mt-2"></div>
+                </div>
+
+                <!-- Interactive Tab Navigation -->
+                <div class="flex justify-center space-x-2 mb-6">
+                    <button onclick="switchTab('kelahiran')" id="tab-kelahiran" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-gold-500 text-emerald-950 transition">
+                        Kelahiran Nabi
+                    </button>
+                    <button onclick="switchTab('akhlak')" id="tab-akhlak" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-800 text-gold-300 transition hover:bg-emerald-700">
+                        Akhlak Terpuji
+                    </button>
+                    <button onclick="switchTab('sejarah')" id="tab-sejarah" class="px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-800 text-gold-300 transition hover:bg-emerald-700">
+                        Tradisi Maulid
+                    </button>
+                </div>
+
+                <!-- Tab Content Containers -->
+                <div id="content-kelahiran" class="space-y-3 bg-emerald-850/90 p-4 rounded-2xl border border-gold-500/20 text-xs leading-relaxed text-gray-200">
+                    <div class="flex items-center space-x-2 text-gold-300 font-bold text-sm mb-1">
+                        <i class="fa-solid fa-moon"></i>
+                        <h4>Kelahiran Sang Rahmatan lil 'Alamin</h4>
+                    </div>
+                    <p>
+                        Nabi Muhammad SAW dilahirkan di Kota Makkah pada hari Senin, 12 Rabiul Awal Tahun Gajah. Kelahiran beliau membawa cahaya penerang bagi alam semesta dan mengakhiri era kegelapan.
+                    </p>
+                </div>
+
+                <div id="content-akhlak" class="hidden space-y-3 bg-emerald-850/90 p-4 rounded-2xl border border-gold-500/20 text-xs leading-relaxed text-gray-200">
+                    <div class="flex items-center space-x-2 text-gold-300 font-bold text-sm mb-1">
+                        <i class="fa-solid fa-heart"></i>
+                        <h4>Keteladanan Akhlak Rasulullah</h4>
+                    </div>
+                    <p>
+                        Rasulullah SAW dijuluki <em>Al-Amin</em> (Orang yang Sangat Terpercaya). Sifat beliau yang penuh kasih sayang, jujur, pemaaf, dan rendah hati menjadi teladan utama bagi seluruh umat manusia sepanjang masa.
+                    </p>
+                </div>
+
+                <div id="content-sejarah" class="hidden space-y-3 bg-emerald-850/90 p-4 rounded-2xl border border-gold-500/20 text-xs leading-relaxed text-gray-200">
+                    <div class="flex items-center space-x-2 text-gold-300 font-bold text-sm mb-1">
+                        <i class="fa-solid fa-vihara"></i>
+                        <h4>Makna Peringatan Maulid Nabi</h4>
+                    </div>
+                    <p>
+                        Memperingati Maulid Nabi merupakan wujud rasa syukur dan kegembiraan atas lahirnya Rasulullah SAW. Momen ini dimanfaatkan untuk memperbanyak sholawat, mempelajari sirah nabawiyah, dan mempererat tali silaturahmi.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- LOKASI & NAVIGASI PETA -->
+        <section id="lokasi" class="px-6 mb-12 scroll-mt-6">
+            <div class="text-center mb-6">
+                <h2 class="font-playfair text-2xl font-bold text-emerald-950">Lokasi Acara</h2>
+                <p class="text-xs text-gray-600 mt-1">SD Negeri 8 Cot Girek</p>
+                <div class="w-16 h-1 gold-bg-gradient mx-auto rounded-full mt-2"></div>
+            </div>
+
+            <div class="bg-white p-4 rounded-3xl shadow-lg border border-gold-300/50">
+                <!-- Map Embed Window -->
+                <div class="w-full h-64 rounded-2xl overflow-hidden bg-gray-200 relative mb-4 border border-gray-100">
+                    <iframe 
+                        title="Peta Lokasi SD Negeri 8 Cot Girek"
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15886.12345678!2d97.123456!3d5.012345!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNcKwMDAnNDQuNCJOIDk3wrAwNycyNC40IkU!5e0!3m2!1sid!2sid!4v1620000000000!5m2!1sid!2sid" 
+                        class="w-full h-full border-0" 
+                        allowfullscreen="" 
+                        loading="lazy">
+                    </iframe>
+                </div>
+
+                <!-- Navigation Target Button -->
+                <a href="https://maps.app.goo.gl/DomUZE1No5q3GUbw6" target="_blank" rel="noopener noreferrer" class="w-full py-3.5 rounded-2xl bg-emerald-900 hover:bg-emerald-850 text-gold-300 font-bold text-xs md:text-sm text-center flex items-center justify-center space-x-2 shadow-md transition">
+                    <i class="fa-solid fa-map-location-dot text-lg"></i>
+                    <span>Buka Google Maps & Petunjuk Arah</span>
+                </a>
+            </div>
+        </section>
+
+        <!-- FORM RESERVASI (RSVP) -->
+        <section id="rsvp" class="px-6 mb-12 scroll-mt-6">
+            <div class="bg-white rounded-3xl p-6 md:p-8 shadow-xl border border-gold-300">
+                <div class="text-center mb-6">
+                    <span class="text-xs text-gold-600 uppercase tracking-widest font-semibold block">Konfirmasi Kehadiran</span>
+                    <h2 class="font-playfair text-2xl font-bold text-emerald-950">RSVP / Reservasi</h2>
+                    <div class="w-12 h-1 gold-bg-gradient mx-auto rounded-full mt-2"></div>
+                </div>
+
+                <form id="rsvpForm" onsubmit="handleRSVPSubmit(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Nama Lengkap</label>
+                        <input type="text" id="rsvpName" required placeholder="Masukkan Nama Anda..." class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-gold-500 focus:ring-2 focus:ring-gold-200 outline-none text-xs md:text-sm transition">
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Jumlah Kehadiran</label>
+                            <select id="rsvpCount" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-gold-500 focus:ring-2 focus:ring-gold-200 outline-none text-xs md:text-sm transition bg-white">
+                                <option value="1 Orang">1 Orang</option>
+                                <option value="2 Orang">2 Orang</option>
+                                <option value="3 Orang">3 Orang</option>
+                                <option value="> 3 Orang">&gt; 3 Orang</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-700 uppercase tracking-wider mb-1">Status Kehadiran</label>
+                            <select id="rsvpStatus" class="w-full px-4 py-3 rounded-xl border border-gray-300 focus:border-gold-500 focus:ring-2 focus:ring-gold-200 outline-none text-xs md:text-sm transition bg-white">
+                                <option value="Hadir">InsyaAllah Hadir</option>
+                                <option value="Tidak Hadir">Maaf, Tidak Bisa Hadir</option>
+                                <option value="Masih Ragu">Masih Ragu-ragu</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="w-full py-3.5 rounded-xl gold-bg-gradient text-emerald-950 font-bold text-xs md:text-sm shadow-md hover:brightness-105 active:scale-95 transition">
+                        Kirim Konfirmasi Kehadiran
+                    </button>
+                </form>
+
+                <!-- STATISTIK RESERVASI RINGKAS -->
+                <div class="mt-6 pt-6 border-t border-gray-100">
+                    <h4 class="text-xs font-bold text-gray-600 uppercase tracking-wider mb-3 text-center">Ringkasan Konfirmasi</h4>
+                    <div class="grid grid-cols-3 gap-2 text-center text-xs">
+                        <div class="bg-emerald-50 p-2.5 rounded-xl border border-emerald-200">
+                            <span id="statHadir" class="block font-bold text-emerald-900 text-base">0</span>
+                            <span class="text-[10px] text-emerald-700 font-medium">Hadir</span>
+                        </div>
+                        <div class="bg-amber-50 p-2.5 rounded-xl border border-amber-200">
+                            <span id="statRagu" class="block font-bold text-amber-900 text-base">0</span>
+                            <span class="text-[10px] text-amber-700 font-medium">Ragu</span>
+                        </div>
+                        <div class="bg-red-50 p-2.5 rounded-xl border border-red-200">
+                            <span id="statAbsen" class="block font-bold text-red-900 text-base">0</span>
+                            <span class="text-[10px] text-red-700 font-medium">Berhalangan</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Toast Notification Box -->
+                <div id="toastMsg" class="hidden mt-4 p-3 bg-emerald-100 border border-emerald-400 text-emerald-900 rounded-xl text-xs text-center font-medium">
+                    Terima kasih! Konfirmasi kehadiran Anda berhasil disimpan.
+                </div>
+            </div>
+        </section>
+
+        <!-- FITUR BAGIKAN UNDANGAN -->
+        <section class="px-6 mb-12">
+            <div class="bg-emerald-900/10 border border-gold-500/40 rounded-3xl p-6 text-center">
+                <h3 class="font-playfair font-bold text-emerald-950 text-base mb-2">Bagikan Undangan Ini</h3>
+                <p class="text-xs text-gray-600 mb-4">Bagikan informasi kebahagiaan maulid ini kepada kerabat dan keluarga</p>
+
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-3">
+                    <button onclick="shareWhatsApp()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-green-600 hover:bg-green-700 text-white font-bold text-xs shadow-md transition flex items-center justify-center space-x-2">
+                        <i class="fa-brands fa-whatsapp text-base"></i>
+                        <span>Bagikan ke WhatsApp</span>
+                    </button>
+                    <button onclick="copyInvitationLink()" class="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-emerald-900 hover:bg-emerald-850 text-gold-300 font-bold text-xs shadow-md transition flex items-center justify-center space-x-2">
+                        <i class="fa-solid fa-copy text-base"></i>
+                        <span>Salin Tautan Undangan</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- CLOSING & SIGNATORY -->
+        <section class="px-6 text-center mb-10">
+            <p class="text-xs text-gray-600 leading-relaxed mb-4">
+                Demikian undangan ini kami sampaikan. Besar harapan kami atas kehadiran Bapak/Ibu/Saudara/i. Semoga acara ini membawa keberkahan dan meningkatkan kecintaan kita kepada Rasulullah SAW.
+            </p>
+
+            <div class="font-amiri text-2xl text-emerald-900 mb-6">
+                وَالسَّلاَمُ عَلَيْكُمْ وَرَحْمَةُ اللهِ وَبَرَكَاتُهُ
+            </div>
+
+            <!-- Signatory Card -->
+            <div class="bg-white p-6 rounded-2xl shadow-md border border-gold-300 max-w-sm mx-auto">
+                <p class="text-xs text-gray-500 uppercase tracking-widest font-semibold mb-1">Hormat Kami,</p>
+                <p class="text-xs text-emerald-800 font-medium mb-3">Kepala Sekolah SD Negeri 8 Cot Girek</p>
+                <div class="font-playfair font-bold text-emerald-950 text-base border-b border-gold-400 inline-block pb-1 px-4">
+                    Bambang Misrianto, S.Pd., M.Pd.
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="text-center text-xs text-gold-200/70 py-6 bg-emerald-950 rounded-t-3xl border-t border-gold-500/30">
+            <p>© 2026 SD Negeri 8 Cot Girek. All Rights Reserved.</p>
+            <p class="mt-1 text-[10px] text-gray-400">Peringatan Maulid Nabi Muhammad SAW 1448 H</p>
+        </footer>
+
+    </main>
+
+    <!-- YOUTUBE IFRAME API FOR AUDIO PLAYER -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        // --- YOUTUBE PLAYER BACKGROUND MUSIC (CP755YH1Pjs - Kisah Sang Rosul by Fitriana) ---
+        let ytPlayer = null;
+        let isPlaying = false;
+
+        function onYouTubeIframeAPIReady() {
+            ytPlayer = new YT.Player('youtube-player', {
+                height: '0',
+                width: '0',
+                videoId: 'CP755YH1Pjs',
+                playerVars: {
+                    'autoplay': 0,
+                    'controls': 0,
+                    'loop': 1,
+                    'playlist': 'CP755YH1Pjs'
+                },
+                events: {
+                    'onReady': onPlayerReady
+                }
+            });
+        }
+
+        function onPlayerReady(event) {
+            ytPlayer.setVolume(80);
+        }
+
+        function toggleMusic() {
+            const icon = document.getElementById('musicIcon');
+            if (!ytPlayer) return;
+
+            if (isPlaying) {
+                ytPlayer.pauseVideo();
+                isPlaying = false;
+                icon.classList.remove('animate-spin-slow');
+                icon.className = 'fa-solid fa-volume-xmark text-lg relative z-10';
+            } else {
+                ytPlayer.playVideo();
+                isPlaying = true;
+                icon.className = 'fa-solid fa-music text-lg relative z-10 animate-spin-slow';
+            }
+        }
+
+        // --- 1. GUEST NAME QUERY PARAMETER DETECTION ---
+        window.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const toParam = urlParams.get('to') || urlParams.get('nama') || urlParams.get('n');
+            if (toParam) {
+                document.getElementById('guestNameDisplay').innerText = decodeURIComponent(toParam);
+            }
+
+            updateRSVPStats();
+            startCountdown();
+        });
+
+        // --- 2. BUKA UNDANGAN BUTTON ---
+        function openInvitation() {
+            const overlay = document.getElementById('coverOverlay');
+            overlay.classList.add('opacity-0', 'pointer-events-none', 'transition-opacity', 'duration-700');
+            
+            setTimeout(() => {
+                overlay.style.display = 'none';
+            }, 700);
+
+            document.getElementById('musicContainer').classList.remove('hidden');
+            document.getElementById('bottomNav').classList.remove('hidden');
+
+            if (ytPlayer && ytPlayer.playVideo) {
+                ytPlayer.playVideo();
+                isPlaying = true;
+                document.getElementById('musicIcon').className = 'fa-solid fa-music text-lg relative z-10 animate-spin-slow';
+            }
+        }
+
+        // --- 3. COUNTDOWN TIMER LOGIC ---
+        function startCountdown() {
+            const targetDate = new Date("October 29, 2026 10:00:00").getTime();
+
+            const timer = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+
+                if (distance < 0) {
+                    clearInterval(timer);
+                    document.getElementById('cd-days').innerText = "00";
+                    document.getElementById('cd-hours').innerText = "00";
+                    document.getElementById('cd-minutes').innerText = "00";
+                    document.getElementById('cd-seconds').innerText = "00";
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById('cd-days').innerText = days < 10 ? '0' + days : days;
+                document.getElementById('cd-hours').innerText = hours < 10 ? '0' + hours : hours;
+                document.getElementById('cd-minutes').innerText = minutes < 10 ? '0' + minutes : minutes;
+                document.getElementById('cd-seconds').innerText = seconds < 10 ? '0' + seconds : seconds;
+            }, 1000);
+        }
+
+        // --- 4. TAB SWITCHING FOR MAULID STORY ---
+        function switchTab(tabName) {
+            const tabs = ['kelahiran', 'akhlak', 'sejarah'];
+            tabs.forEach(t => {
+                const content = document.getElementById(`content-${t}`);
+                const btn = document.getElementById(`tab-${t}`);
+                if (t === tabName) {
+                    content.classList.remove('hidden');
+                    btn.className = "px-3.5 py-1.5 rounded-full text-xs font-bold bg-gold-500 text-emerald-950 transition";
+                } else {
+                    content.classList.add('hidden');
+                    btn.className = "px-3.5 py-1.5 rounded-full text-xs font-bold bg-emerald-800 text-gold-300 transition hover:bg-emerald-700";
+                }
+            });
+        }
+
+        // --- 5. LOCALSTORAGE RSVP LOGIC ---
+        function updateRSVPStats() {
+            const data = localStorage.getItem('maulid_rsvp_sdn8');
+            const currentRsvp = data ? JSON.parse(data) : [];
+
+            let hadir = 0, ragu = 0, absen = 0;
+            currentRsvp.forEach(item => {
+                if (item.status === "Hadir") hadir++;
+                else if (item.status === "Masih Ragu") ragu++;
+                else if (item.status === "Tidak Hadir") absen++;
+            });
+
+            document.getElementById('statHadir').innerText = hadir;
+            document.getElementById('statRagu').innerText = ragu;
+            document.getElementById('statAbsen').innerText = absen;
+        }
+
+        function handleRSVPSubmit(e) {
+            e.preventDefault();
+
+            const name = document.getElementById('rsvpName').value.trim();
+            const count = document.getElementById('rsvpCount').value;
+            const status = document.getElementById('rsvpStatus').value;
+
+            if (!name) return;
+
+            const newEntry = {
+                name: name,
+                count: count,
+                status: status,
+                time: new Date().toLocaleString('id-ID')
+            };
+
+            const data = localStorage.getItem('maulid_rsvp_sdn8');
+            const currentRsvp = data ? JSON.parse(data) : [];
+            currentRsvp.unshift(newEntry);
+            localStorage.setItem('maulid_rsvp_sdn8', JSON.stringify(currentRsvp));
+
+            updateRSVPStats();
+            document.getElementById('rsvpForm').reset();
+            const toast = document.getElementById('toastMsg');
+            toast.classList.remove('hidden');
+
+            setTimeout(() => {
+                toast.classList.add('hidden');
+            }, 4000);
+        }
+
+        // --- 6. BAGIKAN UNDANGAN LOGIC ---
+        function shareWhatsApp() {
+            const text = encodeURIComponent("Assalamu'alaikum Wr. Wb. Kami mengundang Bapak/Ibu/Saudara/i untuk hadir pada Peringatan Maulid Nabi Muhammad SAW SD Negeri 8 Cot Girek.\n\nBuka tautan undangan berikut:\n" + window.location.href);
+            window.open(`https://api.whatsapp.com/send?text=${text}`, '_blank');
+        }
+
+        function copyInvitationLink() {
+            const tempInput = document.createElement('input');
+            tempInput.value = window.location.href;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            // Toast feedback fallback replacement for alert
+            const toast = document.getElementById('toastMsg');
+            toast.innerText = "Tautan undangan berhasil disalin ke clipboard!";
+            toast.classList.remove('hidden');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+                toast.innerText = "Terima kasih! Konfirmasi kehadiran Anda berhasil disimpan.";
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
